@@ -1,59 +1,109 @@
 {
+  "split_mode": {
+    "description": "分段识别模式。",
+    "hint": "Regex: 使用正则表达式匹配; Simple: 使用指定字符匹配。",
+    "type": "string",
+    "options": ["regex", "simple"],
+    "default": "regex"
+  },
+  "split_chars": {
+    "description": "简单模式下的分段字符。",
+    "hint": "仅在 split_mode 为 simple 时生效。输入想要分段的符号，如：，。？！",
+    "type": "string",
+    "default": "。？！?!；;\n"
+  },
   "split_regex": {
-    "description": "用于识别分段点的正则表达式。",
-    "hint": "建议包含常见的句末标点。默认值匹配：句号、问号、感叹号、省略号、换行符。",
+    "description": "正则模式下的表达式。",
+    "hint": "仅在 split_mode 为 regex 时生效。",
     "type": "string",
     "default": "[。？！?!\\n…]+"
   },
   "clean_regex": {
     "description": "分段后清理内容的正则表达式。",
-    "hint": "匹配到的内容将在发送前被删除。常用于去除分段后残留的换行符或句号。默认为空（不清理）。示例：[。\\n]",
     "type": "string",
     "default": ""
   },
   "max_segments": {
     "description": "最大分段数量。",
-    "hint": "限制最大的发送条数，超过此数量的剩余内容将会合并到最后一条发送。防止刷屏风控。建议设置为 5-10。",
     "type": "int",
     "default": 7
   },
   "enable_smart_split": {
-    "description": "是否开启智能识别。",
-    "hint": "开启后，不会在引号、书名号、括号等成对符号内部进行分段，保持引用的完整性。",
+    "description": "是否开启智能识别(忽略引号内标点)。",
     "type": "bool",
     "default": true
   },
+  "image_strategy": {
+    "description": "图片组件的分段策略。",
+    "hint": "Alone: 单独一条消息; Follow Next: 跟随下一段文字; Follow Prev: 跟随上一段文字; Ignore: 视为普通字符嵌入。",
+    "type": "string",
+    "options": ["alone", "follow_next", "follow_prev", "ignore"],
+    "default": "alone"
+  },
+  "at_strategy": {
+    "description": "At(@)组件的分段策略。",
+    "type": "string",
+    "options": ["alone", "follow_next", "follow_prev", "ignore"],
+    "default": "follow_next"
+  },
+  "face_strategy": {
+    "description": "表情(Face)组件的分段策略。",
+    "type": "string",
+    "options": ["alone", "follow_next", "follow_prev", "ignore"],
+    "default": "ignore"
+  },
+  "reply_strategy": {
+    "description": "回复引用(Reply)组件的分段策略。",
+    "type": "string",
+    "options": ["alone", "follow_next", "follow_prev", "ignore"],
+    "default": "alone"
+  },
+  "other_media_strategy": {
+    "description": "其他未知组件的分段策略。",
+    "type": "string",
+    "options": ["alone", "follow_next", "follow_prev", "ignore"],
+    "default": "follow_next"
+  },
   "delay_strategy": {
     "description": "分段发送的延迟策略。",
-    "hint": "'fixed': 固定间隔;\n'random': 在最小值和最大值之间随机;\n'log': 基于字数的对数函数（模拟人类阅读/打字节奏）",
+    "hint": "Linear: 线性延迟(字数*系数); Log: 对数延迟; Random: 随机; Fixed: 固定。",
     "type": "string",
-    "options": ["fixed", "random", "log"],
-    "default": "log"
+    "options": ["linear", "log", "random", "fixed"],
+    "default": "linear"
   },
-  "fixed_delay": {
-    "description": "固定延迟模式下的间隔时间（秒）。",
+  "linear_base": {
+    "description": "线性延迟的基础时间(秒)。",
     "type": "float",
-    "default": 1.5
+    "default": 0.5
   },
-  "random_min": {
-    "description": "随机延迟模式的最小时间（秒）。",
+  "linear_factor": {
+    "description": "线性延迟的单字系数(秒/字)。",
     "type": "float",
-    "default": 1.0
-  },
-  "random_max": {
-    "description": "随机延迟模式的最大时间（秒）。",
-    "type": "float",
-    "default": 3.0
+    "default": 0.1
   },
   "log_base": {
-    "description": "对数延迟模式的基础延迟（秒）。",
+    "description": "对数延迟的基础时间(秒)。",
     "type": "float",
     "default": 0.5
   },
   "log_factor": {
-    "description": "对数延迟模式的系数。",
-    "hint": "公式：基础延迟 + 系数 * log(字数 + 1)。系数越大，字数对延迟的影响越明显。",
+    "description": "对数延迟的系数。",
     "type": "float",
     "default": 0.8
+  },
+  "random_min": {
+    "description": "随机延迟最小值(秒)。",
+    "type": "float",
+    "default": 1.0
+  },
+  "random_max": {
+    "description": "随机延迟最大值(秒)。",
+    "type": "float",
+    "default": 3.0
+  },
+  "fixed_delay": {
+    "description": "固定延迟时间(秒)。",
+    "type": "float",
+    "default": 1.5
   }
 }
