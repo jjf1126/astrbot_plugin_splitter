@@ -35,34 +35,34 @@
   },
   "image_strategy": {
     "description": "图片组件的分段策略。",
-    "hint": "Alone: 单独一条消息; Follow Next: 跟随下一段文字; Follow Prev: 跟随上一段文字; Ignore: 视为普通字符嵌入。",
+    "hint": "单独: 单独一条消息; 跟随下段: 跟随下一段文字; 跟随上段: 跟随上一段文字; 嵌入: 视为普通字符嵌入。",
     "type": "string",
-    "options": ["alone", "follow_next", "follow_prev", "ignore"],
-    "default": "alone"
+    "options": ["单独", "跟随下段", "跟随上段", "嵌入"],
+    "default": "单独"
   },
   "at_strategy": {
     "description": "At(@)组件的分段策略。",
     "type": "string",
-    "options": ["alone", "follow_next", "follow_prev", "ignore"],
-    "default": "follow_next"
+    "options": ["单独", "跟随下段", "跟随上段", "嵌入"],
+    "default": "跟随下段"
   },
   "face_strategy": {
     "description": "表情(Face)组件的分段策略。",
     "type": "string",
-    "options": ["alone", "follow_next", "follow_prev", "ignore"],
-    "default": "ignore"
+    "options": ["单独", "跟随下段", "跟随上段", "嵌入"],
+    "default": "嵌入"
   },
   "reply_strategy": {
     "description": "回复引用(Reply)组件的分段策略。",
     "type": "string",
-    "options": ["alone", "follow_next", "follow_prev", "ignore"],
-    "default": "alone"
+    "options": ["单独", "跟随下段", "跟随上段", "嵌入"],
+    "default": "单独"
   },
   "other_media_strategy": {
     "description": "其他未知组件的分段策略。",
     "type": "string",
-    "options": ["alone", "follow_next", "follow_prev", "ignore"],
-    "default": "follow_next"
+    "options": ["单独", "跟随下段", "跟随上段", "嵌入"],
+    "default": "跟随下段"
   },
   "delay_strategy": {
     "description": "分段发送的延迟策略。",
