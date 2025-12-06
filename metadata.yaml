@@ -1,6 +1,6 @@
 name: "astrbot_plugin_splitter"
 display_name: "对话分段pro"
-version: "v1.0.0"
+version: "v1.0.1"
 author: "nuomicici"
 desc: "LLM 输出自动分段发送插件"
 url: "https://github.com/nuomicici/astrbot_plugin_splitter"
