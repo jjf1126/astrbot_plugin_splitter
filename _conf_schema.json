@@ -33,7 +33,6 @@
     "type": "bool",
     "default": true
   },
-  {
   "enable_reply": {
     "description": "是否保留回复引用。",
     "hint": "开启后，如果 LLM 的回复包含引用（Reply），将保留在第一段消息中；关闭则移除引用。",
