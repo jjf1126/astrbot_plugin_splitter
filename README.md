@@ -7,6 +7,7 @@
 [![查看日志（v1.1.1）](https://img.shields.io/badge/查看日志-blue?style=for-the-badge)](#日志) 
 [![未来计划](https://img.shields.io/badge/未来计划-purple?style=for-the-badge)](#未来计划)
 [![来许愿！](https://img.shields.io/badge/来许愿！-ff69b4?style=for-the-badge)](#联系)
+[![审美累积](https://img.shields.io/badge/审美累积-aa6732?style=for-the-badge)](#避免出现)
 
 </div>
 
@@ -60,3 +61,9 @@
 
 ## 求你们了
 来~~鞭策~~支持一下叭！
+
+# 避免出现
+- 为了能够更好地交流，请引以为戒，不要出现这样子<u>**意义不明**</u>的所谓建议。
+- 如果觉得自己真的不懂，可以去找AI问问之后再来说。
+- 请**务必**！务必**组织好语言**再提建议！这样对你对我都有好处，你可以很快就获得反馈甚至仓库更新，而我也可以不必浪费口舌猜你什么意思。
+
