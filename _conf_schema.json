@@ -7,14 +7,14 @@
     "default": "regex"
   },
   "split_chars": {
-    "description": "简单模式下的分段字符。",
-    "hint": "仅在 split_mode 为 simple 时生效。输入想要分段的符号，如：，。？！",
+    "description": "简单模式下的分段字符。文字后面带这些符号就会分段",
+    "hint": "仅分段模式为simple 时生效。输入想要分段的符号（换行是\\n，空格是），如：，。？！",
     "type": "string",
-    "default": "。？！?!；;\n"
+    "default": "。？！?!；;\\n"
   },
   "split_regex": {
     "description": "正则模式下的表达式。",
-    "hint": "仅在 split_mode 为 regex 时生效。",
+    "hint": "仅在分段模式为 regex 时生效。",
     "type": "string",
     "default": "[。？！?!\\n…]+"
   },
@@ -50,7 +50,7 @@
     "type": "string",
     "options": ["llm_only", "all"],
     "default": "llm_only"
-  }
+  },
   "image_strategy": {
     "description": "图片组件的分段策略。",
     "hint": "单独: 单独一条消息; 跟随下段: 跟随下一段文字; 跟随上段: 跟随上一段文字; 嵌入: 视为普通字符嵌入。",
