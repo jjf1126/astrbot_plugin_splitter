@@ -15,6 +15,41 @@ from astrbot.core.star.session_llm_manager import SessionServiceManager
 
 
 class MessageSplitterPlugin(Star):
+
+    def _convert_text_to_reply_components(self, chain: List[BaseMessageComponent]) -> List[BaseMessageComponent]:
+        """将文本中的 Reply(id=123) 还原为真实组件，并确保 ID 文本不残留"""
+        new_chain = []
+        # 匹配模式：Reply(id=数字)
+        pattern = re.compile(r"Reply\(id=(\d+)\)")
+        
+        for comp in chain:
+            if isinstance(comp, Plain) and comp.text:
+                last_end = 0
+                text = comp.text
+                
+                # 使用 finditer 遍历所有匹配项
+                for match in pattern.finditer(text):
+                    # 1. 添加匹配项之前的纯文本
+                    prefix = text[last_end:match.start()]
+                    if prefix:
+                        new_chain.append(Plain(prefix))
+                    
+                    # 2. 添加真实的 Reply 组件（使用括号捕获的 ID）
+                    reply_id = match.group(1)
+                    new_chain.append(Reply(id=reply_id))
+                    
+                    # 3. 更新偏移量，跳过整个 "Reply(id=xxx)" 部分
+                    last_end = match.end()
+                
+                # 4. 添加最后剩余的文本
+                suffix = text[last_end:]
+                if suffix:
+                    new_chain.append(Plain(suffix))
+            else:
+                new_chain.append(comp)
+        return new_chain
+
+
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
         self.config = config
@@ -280,7 +315,7 @@ class MessageSplitterPlugin(Star):
         enable_reply = self._get_cfg("enable_reply", True)
         enable_smart = self._get_cfg("enable_smart_reply", False)
 
-        if segments and source_id:
+        if segments and source_id and enable_reply:
             if enable_smart:
                 if self._should_add_smart_reply(event): self._prepend_reply(segments[0], source_id)
             elif enable_reply:
@@ -311,7 +346,10 @@ class MessageSplitterPlugin(Star):
         # --- 8. 发送 ---
         for i in range(len(segments) - 1):
             seg_chain = segments[i]
-            if i > 0 and enable_smart and not enable_reply: seg_chain = self._remove_reply_components(seg_chain)
+
+            seg_chain = self._convert_text_to_reply_components(seg_chain)
+
+            #if i > 0 and enable_smart and not enable_reply: seg_chain = self._remove_reply_components(seg_chain)
             text_content = "".join([c.text for c in seg_chain if isinstance(c, Plain)])
             if not text_content.strip(" \t\r\n\u200b") and not any(not isinstance(c, Plain) for c in seg_chain): continue
             
@@ -327,7 +365,11 @@ class MessageSplitterPlugin(Star):
         if enable_smart and source_id: self._mark_bot_reply(event, source_id)
 
         last_seg = segments[-1]
-        if enable_smart and not enable_reply: last_seg = self._remove_reply_components(last_seg)
+
+        last_seg = self._convert_text_to_reply_components(last_seg)
+
+
+        #if enable_smart and not enable_reply: last_seg = self._remove_reply_components(last_seg)
         result.chain.clear(); result.chain.extend(last_seg)
 
     def _log_segment(self, index: int, total: int, chain: List[BaseMessageComponent], method: str):
@@ -381,7 +423,8 @@ class MessageSplitterPlugin(Star):
             else:
                 c_type = type(comp).__name__.lower()
                 if "reply" in c_type:
-                    if enable_reply or self._get_cfg("enable_smart_reply", False): buffer.append(comp)
+                    #if enable_reply or self._get_cfg("enable_smart_reply", False): 
+                    buffer.append(comp)
                     continue
                 strategy = strategies.get(c_type, strategies.get("default", "跟随下段"))
                 if strategy == "单独":
